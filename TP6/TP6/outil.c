@@ -159,7 +159,9 @@ bool est_sup(Enregistrement enr1, Enregistrement enr2)
 		else if (_strcmpi(enr1.prenom, enr2.prenom) > 0) {
 			return(false);
 		}
-		else { return true; }                            // en cas de nom et prenom == on retourne true
+		else {                          // en cas de nom et prenom == on retourne true
+			return true;
+		}                            
 	}
 }
 
