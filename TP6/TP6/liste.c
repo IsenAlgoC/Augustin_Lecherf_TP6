@@ -4,8 +4,8 @@
 #include <locale.h>
 #include "liste.h"
 
-// #define VERSION 3.0
-// #define SQUELET
+//#define VERSION 3.0
+//#define SQUELET
 
 
 // crée une nouvelle liste chainée unilataire vide et renvoie un pointeur sur cette liste
@@ -79,12 +79,10 @@ int InsertElementAt(LinkedList* Liste, int i, Enregistrement pers) {
 		if (Liste->size == 0) { // insertion en tête de l'unique élément
 			NewElement = NewLinkedListElement(pers);
 			if (NewElement != NULL) {
-				//
-				//
-				//   insertion code ici
-				//
-				//
-				//
+				Liste->head = NewElement;
+				Liste->size = 1;
+				Liste->tail = NewElement;
+				return(1);
 			}
 			else {
 				return(0);
@@ -93,12 +91,10 @@ int InsertElementAt(LinkedList* Liste, int i, Enregistrement pers) {
 		if (Liste->size <= i) { // insertion en queue
 			NewElement = NewLinkedListElement(pers);
 			if (NewElement != NULL) {
-				//
-				//
-				//   insertion code ici
-				//
-				//
-				//
+				Liste->tail->next = NewElement;
+				Liste->tail = NewElement;
+				Liste->size += 1;
+				return(1);
 			}
 			else {
 				return(0);
@@ -118,11 +114,38 @@ int DeleteLinkedListElem(LinkedList* list, SingleLinkedListElem* item) {
 	if ((list->head == list->tail) && (list->size != 1)) return(0); // anomalie
 	if ((list->size == 0) || (item == NULL)) return(0); // pas d'élément dans la liste ou item invalide
 
-	//
-	//
-	// compléter code ici
-	//
-	//
+	SingleLinkedListElem* tmp = list->head;
+	SingleLinkedListElem* previous = NULL;
+	if ((item = list->head) && (item == list->tail)) {
+		list->head = NULL;
+		list->tail = NULL;
+		list->size = 0;
+		free(item);
+		return(1);
+	}
+	if (item == list->head) {
+		tmp = item->next;
+		list->size--;
+		free(item);
+		return(1);
+	}
+	while ((tmp != NULL) && (tmp != item)) {
+		previous = tmp;
+		tmp = tmp->next;
+	}
+	if ((previous != NULL) && (tmp == item) && (tmp->next == NULL)) {
+		list->tail = previous;
+		previous->next = NULL;
+		list->size--;
+		free(item);
+		return(1);
+	}
+	if ((previous != NULL) && (tmp == item) && (tmp->next != NULL)) {
+		previous->next = item->next;
+		list->size--;
+		free(item);
+		return(1);
+	}
 
 
 	return(0);  // pas trouvé
